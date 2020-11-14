@@ -163,7 +163,6 @@ class Recognizer:
                         if min_distance <= recognition_threshold_distance:
                             # get the corrosponding id of the matched face
                             face_id = self.known_face_ids[best_match_index]
-                            print("\n\ntesst", face_id)
                             # if the distance is very close to the threshold 
                             # then add the face encodes to avoid miss recognise it later
                             if(recognition_threshold_distance-min_distance <= recognition_threshold_distance/2.0):
