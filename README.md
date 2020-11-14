@@ -17,3 +17,9 @@ the process of analysis is kinda slow because i use seperate models in this pipe
 > - models quantization and using tensorRT For speeding the models
 > - most of the faces models (age, gender, race, emotions) is using the same backbone and it can be groubed into one model that need to be retrained again with available datasets.
 > - recognition process is applyed for each frame (used as face tracker) and it can be replaced with a suitable object tracker.
+
+### installation
+```python3 -m pip install -r faceApi/requirments.txt```
+
+### test faceAPI
+```python3 test_face_Api.py```
