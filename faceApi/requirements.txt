@@ -6,3 +6,4 @@ face_recognition
 scipy
 mtcnn
 onnxruntime
+onnx
