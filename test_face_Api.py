@@ -1,7 +1,7 @@
 # from yoloApi.agent import cv2, yolov4
 
 from faceApi.agent import  face_analysis, cv2
-from faceApi.drawing import draw_discard_faces, draw_accepted_faces
+from faceApi.drawing import draw_discard_faces, draw_accepted_faces, draw_raw_land_marks
 import time
 
 
@@ -9,12 +9,19 @@ import time
 
 def main(video_path):
     cap = cv2.VideoCapture(video_path)
+    frame_width = int(cap.get(3)) 
+    frame_height = int(cap.get(4)) 
+   
+    size = (frame_width, frame_height) 
+    result = cv2.VideoWriter('result.avi',  
+                         cv2.VideoWriter_fourcc(*'MJPG'), 
+                         15, size) 
     counter = 0
     while True:
         counter +=1
         try:
             # print(counter)
-            if counter % 1 == 0: 
+            if counter % 2 == 0: 
                 ret, frame_read = cap.read() 
                 if(ret==False):
                     print('unable to read further more from feed!')
@@ -30,16 +37,18 @@ def main(video_path):
                     if faces_info == -1:
                         continue
                 except Exception as e:
-                    print(e)
+                    print("\n\nException : ", e)
+                    continue
                 
                 selected_faces_locations,faces_confidences, detected_faces_ids, faces_landmarks, genders, races, emotions, dicarded_faces = faces_info
+
 
                 draw_discard_faces(frame_rgb, dicarded_faces)
                 draw_accepted_faces(frame_rgb, selected_faces_locations,faces_confidences, detected_faces_ids, faces_landmarks, genders, races, emotions)
 
-                # draw_raw_land_marks(frame, faces_landmarks)
+                draw_raw_land_marks(frame_rgb, faces_landmarks)
 
-
+                result.write(frame) 
                 cv2.imshow("frame", frame_rgb)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
@@ -61,4 +70,4 @@ def main(video_path):
     cap.release()
 
 if __name__ == "__main__":
-    main('./faceApi/samples_videos/faces.mp4')
+    main('./faceApi/samples_videos/conf_test.mp4')

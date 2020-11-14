@@ -149,27 +149,33 @@ class Recognizer:
 
                 # See if the face is  matching any of known face(s)
                 # use the known face with the smallest distance to the new face
-                face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
-                best_match_index, min_distance = None, None
+                if len(self.known_face_encodings)==0:
+                    face_id = self.add_new_face_encodes(face_encoding, save_refresh_rate=save_rate)
 
-                if len(face_distances) > 0: #if not that there is no any known face yet
-                    best_match_index = np.argmin(face_distances)
-                    min_distance = np.min(face_distances)
-                    # check if the best match is less than or equal the given threshold
-                    if min_distance <= recognition_threshold_distance:
-                        # get the corrosponding id of the matched face
-                        face_id = self.known_face_ids[best_match_index]
-                        # if the distance is very close to the threshold 
-                        # then add the face encodes to avoid miss recognise it later
-                        if(recognition_threshold_distance-min_distance <= recognition_threshold_distance/2.0):
-                            self.known_face_encodings.append(face_encoding)
-                            self.known_face_ids.append(face_id)
-                    else:
-                        # if the distance is not less than or equal the given threshold
-                        face_id = self.add_new_face_encodes(face_encoding, save_refresh_rate=save_rate)
-         
+                else:
+                    face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
+                    best_match_index, min_distance = None, None
 
-                detected_faces_ids.append(face_id)
+                    if len(face_distances) > 0: #if not that there is no any known face yet
+                        best_match_index = np.argmin(face_distances)
+                        min_distance = np.min(face_distances)
+                        # check if the best match is less than or equal the given threshold
+                        if min_distance <= recognition_threshold_distance:
+                            # get the corrosponding id of the matched face
+                            face_id = self.known_face_ids[best_match_index]
+                            print("\n\ntesst", face_id)
+                            # if the distance is very close to the threshold 
+                            # then add the face encodes to avoid miss recognise it later
+                            if(recognition_threshold_distance-min_distance <= recognition_threshold_distance/2.0):
+                                self.known_face_encodings.append(face_encoding)
+                                self.known_face_ids.append(face_id)
+                        else:
+                            # if the distance is not less than or equal the given threshold
+                            face_id = self.add_new_face_encodes(face_encoding, save_refresh_rate=save_rate)
+                    
+
+                if face_id!=None:
+                    detected_faces_ids.append(face_id)
                 
         return detected_faces_ids, raw_landmarks, face_encodings, genders_list, races_list
 
