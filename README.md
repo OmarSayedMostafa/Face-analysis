@@ -22,4 +22,5 @@ the process of analysis is kinda slow because i use seperate models in this pipe
 ```python3 -m pip install -r faceApi/requirments.txt```
 
 ### test faceAPI
+> edit the video path inside the test_face_Api.py file and run it:
 ```python3 test_face_Api.py```
