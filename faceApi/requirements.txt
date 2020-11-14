@@ -1,0 +1,8 @@
+imutils
+opencv-python
+Pillow
+numpy
+face_recognition
+scipy
+mtcnn
+onnxruntime
